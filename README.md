@@ -108,3 +108,7 @@ The container application fetches and render mfes based on:
     **Characteristics**:
     1. Ensures strict isolation..
     2. Limited communication and performance issues. 
+<br/>
+<br/>
+
+# [ModuleFederation](./docs/moduleFederation.md)
