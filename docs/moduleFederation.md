@@ -1,0 +1,112 @@
+## Module Federatation
+
+Module federation is a Webpack feature introducedin Webpack 5. It enables developers to build Micro Frontends by allowing  JavaScript modules to be shared dynamically between different applications.
+
+## Steps to Set Up Module Federation
+
+1. ### Install Dependencies: 
+    Ensure Webpack 5 is installed in you project.
+    <br/>
+    ```npm install webpack webpack-cli webpack-dev-server html-webpack-plugin --save-dev```
+
+2. ### Configure Module Federation Plugin: 
+    Update then ```webpack.config.js``` file of both host and remote application.
+
+    - #### Host application configuration: 
+        ```
+        const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+
+        module.exports = {
+            entry: "./src/index",
+            output: {
+                publicPath: "http://localhost:3000/",
+            },
+            plugins: [
+                new ModuleFederationPlugin({
+                    name: "host",
+                    remotes: {
+                        mfe1: "mfe1@http://localhost:3001/remoteEntry.js",
+                    },
+                    shared: { react: { singleton: true }, "react-dom": { singleton: true } },
+                }),
+            ],
+            devServer: {
+                port: 3000,
+            },
+        };
+        ```
+
+    - #### Remote Application Configuration:
+        ```
+        const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+            module.exports = {
+                entry: "./src/index",
+                output: {
+                    publicPath: "http://localhost:3001/",
+                },
+                plugins: [
+                    new ModuleFederationPlugin({
+                        name: "mfe1",
+                        filename: "remoteEntry.js",
+                        exposes: {
+                            "./App": "./src/App",
+                        },
+                        shared: { react: { singleton: true }, "react-dom": { singleton: true } },
+                    }),
+                ],
+                devServer: {
+                    port: 3001,
+                },
+            };
+        ```
+
+3. ## Export and Import Remote Modules
+    - In a remote app (mfe1), expose the module:
+    ```
+        // src/App.js
+        const App = () => <div>Hello from MFE1!</div>;
+        export default App;
+    ```
+
+    - In the host app, import the remote module dynamically:
+
+    ```
+        import React, { Suspense } from "react";
+
+        const RemoteApp = React.lazy(() => import("mfe1/App"));
+
+        const App = () => (
+            <div>
+                <h1>Host Application</h1>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <RemoteApp />
+                </Suspense>
+            </div>
+        );
+
+        export default App;
+    ```
+4. ## Run Both Applications:
+    Start both host and remote applications:
+    ```
+    # In host project
+    npm start
+
+    # In remote project
+    npm start
+    ```
+5. ## Access the Application: 
+    - Host: http://localhost:3000
+    - Remote: http://localhost:3001
+
+
+# How Module Federation Works
+
+## Remote Entry: 
+1. The remoteEntry.js file in the remote app registers and exposes the modules.
+
+2. Dynamic Loading: The host app fetches the exposed modules via a dynamic import using the URL specified in remotes.
+
+3. Shared Dependencies: Dependencies like react and react-dom are shared between the applications to avoid duplication.
+
+4. On-demand Loading: Modules are loaded only when needed, improving performance.

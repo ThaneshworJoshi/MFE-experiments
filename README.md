@@ -111,4 +111,4 @@ The container application fetches and render mfes based on:
 <br/>
 <br/>
 
-# [ModuleFederation](./docs/moduleFederation.md)
+# [ModuleFederation](docs/moduleFederation.md)
