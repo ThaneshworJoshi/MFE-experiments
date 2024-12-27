@@ -17,8 +17,10 @@ module.exports = {
             name: 'container',
              // Name of the current application/module
             remotes: {
-                products: 'products@http://localhost:8081/remoteEntry.js' 
+                products: 'products@http://localhost:8081/remoteEntry.js', 
                 // Remote application "products" is available at specified URL and file
+                cart: 'cart@http://localhost:8082/remoteEntry.js'
+                // Remote application "carts" is available at specified URL and file
             }
         }),
         new HtmlWebpackPlugin({
