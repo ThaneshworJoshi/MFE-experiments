@@ -17,47 +17,81 @@ Module federation is a Webpack feature introducedin Webpack 5. It enables develo
         const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 
         module.exports = {
-            entry: "./src/index",
+            // Entry point for the application
+            entry: "./src/index", // Specifies the starting file for the application bundling
+
             output: {
-                publicPath: "http://localhost:3000/",
+                // The base URL for all assets within the application
+                publicPath: "http://localhost:3000/", // Ensures correct resolution of dynamically loaded chunks
             },
+
             plugins: [
                 new ModuleFederationPlugin({
-                    name: "host",
+                    // Name of the current application (host)
+                    name: "host", // Used internally to identify this application in Module Federation
+
+                    // Remote micro-frontends consumed by this host application
                     remotes: {
-                        mfe1: "mfe1@http://localhost:3001/remoteEntry.js",
+                        mfe1: "mfe1@http://localhost:3001/remoteEntry.js", 
+                        // 'mfe1' is the alias for the remote app
+                        // 'http://localhost:3001/remoteEntry.js' is the URL of the remote module's entry point
                     },
-                    shared: { react: { singleton: true }, "react-dom": { singleton: true } },
+
+                    // Shared dependencies across applications
+                    shared: {
+                        react: { singleton: true }, // Ensures only one version of React is used between host and remotes
+                        "react-dom": { singleton: true }, // Ensures only one version of React-DOM is used
+                    },
                 }),
             ],
+
             devServer: {
-                port: 3000,
+                // Development server configuration
+                port: 3000, // Host application runs on port 3000
             },
         };
+
         ```
 
     - #### Remote Application Configuration:
         ```
         const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-            module.exports = {
-                entry: "./src/index",
-                output: {
-                    publicPath: "http://localhost:3001/",
-                },
-                plugins: [
-                    new ModuleFederationPlugin({
-                        name: "mfe1",
-                        filename: "remoteEntry.js",
-                        exposes: {
-                            "./App": "./src/App",
-                        },
-                        shared: { react: { singleton: true }, "react-dom": { singleton: true } },
-                    }),
-                ],
-                devServer: {
-                    port: 3001,
-                },
-            };
+
+        module.exports = {
+            // Entry point for the application
+            entry: "./src/index", // Specifies the starting file for this micro-frontend
+
+            output: {
+                // The base URL for assets loaded dynamically
+                publicPath: "http://localhost:3001/", // Ensures assets are correctly resolved at runtime
+            },
+
+            plugins: [
+                new ModuleFederationPlugin({
+                    // Name of the micro-frontend
+                    name: "mfe1", // Unique identifier for this micro-frontend
+
+                    // Name of the file that serves as the entry point for other applications
+                    filename: "remoteEntry.js", // Exposes the application for use by host applications
+
+                    // Modules exposed by this micro-frontend
+                    exposes: {
+                        "./App": "./src/App", // Makes `./src/App` accessible to other federated modules under the alias `./App`
+                    },
+
+                    // Shared dependencies across applications
+                    shared: {
+                        react: { singleton: true }, // Ensures only one instance of React is used
+                        "react-dom": { singleton: true }, // Ensures only one instance of React-DOM is used
+                    },
+                }),
+            ],
+
+            devServer: {
+                // Development server configuration
+                port: 3001, // Micro-frontend application runs on port 3001
+            },
+        };
         ```
 
 3. ## Export and Import Remote Modules
