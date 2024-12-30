@@ -3,10 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MFE container</title>
+    <title>MFE Container</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .content {
+            content {
+            flex: 1; /* Ensures content fills the remaining space */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Centers content vertically */
+            align-items: center; /* Centers content horizontally */
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="my-products"></div>
-    <div id="my-cart"></div>
+    <header>
+        Welcome to the Micro Frontend Demo
+    </header>
+    <div class="content">
+        <div id="my-products"></div>
+        <div id="my-cart"></div>
+    </div>
+    <footer>
+        © 2024 Micro Frontend App | Powered by Module Federation
+    </footer>
 </body>
 </html>
