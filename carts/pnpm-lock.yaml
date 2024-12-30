@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   faker:
-    specifier: 5.1.0
+    specifier: ^5.1.0
     version: 5.1.0
   html-webpack-plugin:
     specifier: 5.5.0

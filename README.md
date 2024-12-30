@@ -112,3 +112,4 @@ The container application fetches and render mfes based on:
 <br/>
 
 # [ModuleFederation](docs/moduleFederation.md)
+# [Shared Module For Micro Frontends](docs/shardModule.md)
